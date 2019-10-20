@@ -24,7 +24,12 @@ def run(args, standard_input_flag):
     else:
         print("============================ OUTPUT ============================")
         for f in args.file_input:  # Iterate over file list
-            f_in = open(f)
+            f_in = ""
+            try:
+                f_in = open(f)
+            except IOError:
+                # file didn't exist (or other issues)
+                raise IOError("File doesn't exist/permission issue")
             for line in f_in:  # Iterate over single file content
                 raw_text += line
             process_func = make_process_func(args.underscore, args.color, args.machine)
